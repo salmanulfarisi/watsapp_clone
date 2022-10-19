@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:watsapp_clone/pages/camara_page.dart';
 import 'package:watsapp_clone/pages/chat_pages.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -13,7 +14,6 @@ class _HomeScreenState extends State<HomeScreen>
   late TabController _controller;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _controller = TabController(length: 4, vsync: this, initialIndex: 0);
   }
@@ -78,9 +78,7 @@ class _HomeScreenState extends State<HomeScreen>
       body: TabBarView(
         controller: _controller,
         children: const [
-          Center(
-            child: Text('Camera'),
-          ),
+          CamaraPage(),
           ChatPage(),
           Center(
             child: Text('Status'),
