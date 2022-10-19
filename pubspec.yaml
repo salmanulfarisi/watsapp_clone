@@ -27,14 +27,14 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
-  camera: ^0.10.0+3
+  camera: 
   cupertino_icons: ^1.0.2
   emoji_picker_flutter: ^1.5.0
   flutter:
     sdk: flutter
   google_fonts: ^3.0.1
   path: 
-  path_provider: ^2.0.11
+  path_provider: 
   shared_preferences: ^2.0.15
 
 dev_dependencies:
