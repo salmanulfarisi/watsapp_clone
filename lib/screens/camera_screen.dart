@@ -1,8 +1,11 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:watsapp_clone/screens/camara_view.dart';
+import 'package:watsapp_clone/screens/video_view.dart';
 
 List<CameraDescription>? cameras;
 
@@ -16,6 +19,8 @@ class CameraScreen extends StatefulWidget {
 class _CameraScreenState extends State<CameraScreen> {
   late CameraController _cameraController;
   late Future<void> cameraValue;
+  bool isRecording = false;
+  String? videoPath;
   @override
   void initState() {
     super.initState();
@@ -61,15 +66,45 @@ class _CameraScreenState extends State<CameraScreen> {
                         size: 30,
                       ),
                     ),
-                    InkWell(
-                      onTap: () {
-                        takePhoto(context);
+                    GestureDetector(
+                      onLongPressUp: () async {
+                        setState(() {
+                          isRecording = false;
+                        });
+                        final videoPath = join(
+                            (await getTemporaryDirectory()).path,
+                            '${DateTime.now()}.mp4');
+                        await _cameraController.stopVideoRecording();
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => VideoView(
+                                      path: videoPath,
+                                    )));
                       },
-                      child: const Icon(
-                        Icons.panorama_fish_eye,
-                        color: Colors.white,
-                        size: 70,
-                      ),
+                      onLongPress: () async {
+                        try {
+                          await _cameraController.startVideoRecording();
+                          setState(() {
+                            isRecording = true;
+                          });
+                        } catch (e) {
+                          print(e);
+                        }
+                      },
+                      onTap: () {
+                        if (!isRecording) {
+                          takePhoto(context);
+                        }
+                      },
+                      child: isRecording
+                          ? const Icon(Icons.radio_button_on,
+                              color: Colors.red, size: 80)
+                          : const Icon(
+                              Icons.panorama_fish_eye,
+                              color: Colors.white,
+                              size: 70,
+                            ),
                     ),
                     IconButton(
                       onPressed: () {},
@@ -108,12 +143,6 @@ class _CameraScreenState extends State<CameraScreen> {
                       path: file!.path,
                     )));
       });
-      // Navigator.push(
-      //     context,
-      //     MaterialPageRoute(
-      //         builder: (context) => CamaraView(
-      //               path: path,
-      //             )));
     } catch (e) {
       print(e);
     }

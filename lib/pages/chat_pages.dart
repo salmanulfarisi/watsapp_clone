@@ -31,6 +31,12 @@ class _ChatPageState extends State<ChatPage> {
         isGroup: true,
         time: "4:00",
         currentMessage: "Hi, How are you?"),
+    ChatModel(
+        name: "Sinan",
+        icon: "S",
+        isGroup: false,
+        time: "4:55",
+        currentMessage: "Project Kayinjooooo???"),
   ];
   @override
   Widget build(BuildContext context) {

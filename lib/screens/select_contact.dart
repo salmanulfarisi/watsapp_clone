@@ -20,7 +20,7 @@ class _SelectContactState extends State<SelectContact> {
       ChatModel(name: 'Ameen', status: "MERN Devolper"),
       ChatModel(name: 'Kunjutty', status: "Flutter Devolper"),
       ChatModel(name: 'Shabeeb', status: "Python Devolper"),
-      ChatModel(name: 'Ameen', status: "MERN Devolper"),
+      ChatModel(name: 'Sinan', status: "Flutter Devolper"),
     ];
     return Scaffold(
       appBar: AppBar(
