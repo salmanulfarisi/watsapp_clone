@@ -18,8 +18,17 @@ class _VideoViewState extends State<VideoView> {
     super.initState();
     _controller = VideoPlayerController.file(File(widget.path))
       ..initialize().then((_) {
-        setState(() {});
+        // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
+        setState(() {
+          _controller.play();
+        });
       });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _controller.dispose();
   }
 
   @override
@@ -52,14 +61,15 @@ class _VideoViewState extends State<VideoView> {
           child: Stack(
             children: [
               SizedBox(
-                  width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height - 169,
-                  child: _controller.value.isInitialized
-                      ? AspectRatio(
-                          aspectRatio: _controller.value.aspectRatio,
-                          child: VideoPlayer(_controller),
-                        )
-                      : Container()),
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height - 169,
+                child: _controller.value.isInitialized
+                    ? AspectRatio(
+                        aspectRatio: _controller.value.aspectRatio,
+                        child: VideoPlayer(_controller),
+                      )
+                    : const Center(child: CircularProgressIndicator()),
+              ),
               Positioned(
                   bottom: 0,
                   child: Container(
@@ -76,44 +86,35 @@ class _VideoViewState extends State<VideoView> {
                         prefixIcon: Icon(
                           Icons.add_photo_alternate,
                           color: Colors.white,
-                          size: 30,
                         ),
-                        suffixIcon: CircleAvatar(
-                          backgroundColor: Colors.teal,
-                          child: Icon(
-                            Icons.check,
-                            color: Colors.white,
-                          ),
-                        ),
-                        hintText: 'Add a caption...',
+                        hintText: 'Type a message',
                         hintStyle: TextStyle(color: Colors.white),
                         border: InputBorder.none,
                       ),
                     ),
                   )),
-              Align(
-                alignment: Alignment.center,
-                child: InkWell(
-                  onTap: () {
-                    setState(() {
-                      _controller.value.isPlaying
-                          ? _controller.pause()
-                          : _controller.play();
-                    });
-                  },
-                  child: CircleAvatar(
-                    backgroundColor: Colors.black38,
-                    radius: 30,
-                    child: Icon(
-                      _controller.value.isPlaying
-                          ? Icons.pause
-                          : Icons.play_arrow,
-                      color: Colors.white,
-                      size: 50,
+              Positioned(
+                  bottom: 0,
+                  right: 0,
+                  child: Container(
+                    width: 80,
+                    height: 80,
+                    padding: const EdgeInsets.all(10),
+                    color: Colors.black54,
+                    child: IconButton(
+                      onPressed: () {
+                        _controller.value.isPlaying
+                            ? _controller.pause()
+                            : _controller.play();
+                      },
+                      icon: Icon(
+                        _controller.value.isPlaying
+                            ? Icons.pause
+                            : Icons.play_arrow,
+                        color: Colors.white,
+                      ),
                     ),
-                  ),
-                ),
-              )
+                  ))
             ],
           )),
     );

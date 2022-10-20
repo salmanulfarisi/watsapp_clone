@@ -2,6 +2,8 @@ import 'dart:io';
 
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:watsapp_clone/customUI/on_message.dart';
+import 'package:watsapp_clone/customUI/replay_card.dart';
 import 'package:watsapp_clone/model/chat_model.dart';
 
 class IndividualPage extends StatefulWidget {
@@ -113,7 +115,23 @@ class _IndividualPageState extends State<IndividualPage> {
         child: WillPopScope(
           child: Stack(
             children: [
-              ListView(),
+              SizedBox(
+                height: MediaQuery.of(context).size.height - 140,
+                child: ListView(
+                  children: const [
+                    OnMessageCard(),
+                    ReplayMessageCard(),
+                    OnMessageCard(),
+                    ReplayMessageCard(),
+                    OnMessageCard(),
+                    ReplayMessageCard(),
+                    OnMessageCard(),
+                    ReplayMessageCard(),
+                    OnMessageCard(),
+                    ReplayMessageCard(),
+                  ],
+                ),
+              ),
               Align(
                 alignment: Alignment.bottomCenter,
                 child: Column(

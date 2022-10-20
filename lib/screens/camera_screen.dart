@@ -37,6 +37,7 @@ class _CameraScreenState extends State<CameraScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black,
       body: Stack(children: [
         FutureBuilder(
             builder: (context, snapshot) {
@@ -71,26 +72,23 @@ class _CameraScreenState extends State<CameraScreen> {
                         setState(() {
                           isRecording = false;
                         });
-                        final videoPath = join(
-                            (await getTemporaryDirectory()).path,
-                            '${DateTime.now()}.mp4');
+                        final path = join(
+                          (await getTemporaryDirectory()).path,
+                          '${DateTime.now()}.mp4',
+                        );
                         await _cameraController.stopVideoRecording();
                         Navigator.push(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => VideoView(
-                                      path: videoPath,
+                                      path: path,
                                     )));
                       },
                       onLongPress: () async {
-                        try {
-                          await _cameraController.startVideoRecording();
-                          setState(() {
-                            isRecording = true;
-                          });
-                        } catch (e) {
-                          print(e);
-                        }
+                        setState(() {
+                          isRecording = true;
+                        });
+                        await _cameraController.startVideoRecording();
                       },
                       onTap: () {
                         if (!isRecording) {
@@ -99,7 +97,7 @@ class _CameraScreenState extends State<CameraScreen> {
                       },
                       child: isRecording
                           ? const Icon(Icons.radio_button_on,
-                              color: Colors.red, size: 80)
+                              color: Colors.red, size: 60)
                           : const Icon(
                               Icons.panorama_fish_eye,
                               color: Colors.white,
